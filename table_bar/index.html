@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Line Bar Chart Table</title>
+  <style>
+    table {
+        border-collapse: collapse;
+        width: 300px;
+      }
+      
+      th, td {
+        padding: 10px;
+        text-align: center;
+      }
+      
+      .chart {
+        position: relative;
+        height: 20px; /* Set the height of the line */
+        background-color: lightgrey;
+        overflow: hidden;
+      }
+      
+      .chart::before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        background-color: grey; /* Set the line color */
+      }
+      
+      /* Add custom colors for each row */
+      tr:nth-child(1) .chart::before {
+        width: 75%; /* Adjust this value based on the data-value (percentage) */
+      }
+      
+      tr:nth-child(2) .chart::before {
+        width: 50%;
+      }
+      
+      tr:nth-child(3) .chart::before {
+        width: 30%;
+      }
+      
+      /* Add more custom values for additional rows if needed */
+      
+  </style>
+</head>
+<body>
+  <table id="lineBarChartTable">
+    <thead>
+      <tr>
+        <th>Row Label</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Row 1</td>
+        <td class="chart" data-value="75">75</td>
+      </tr>
+      <tr>
+        <td>Row 2</td>
+        <td class="chart" data-value="50">50</td>
+      </tr>
+      <tr>
+        <td>Row 3</td>
+        <td class="chart" data-value="30">30</td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>

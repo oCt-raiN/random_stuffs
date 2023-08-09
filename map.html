@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!-- https://github.com/oCt-raiN/cc2cn/blob/master/data.py
+https://www.cssscript.com/interactive-svg-world-map/ -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style>
+    #container_map { width: 700px; height: 475px; background: transparent;}
+    #flag{
+        width: 18px;
+        box-shadow: 1px 1px 1px 1px rgb(92, 92, 92);
+        border-radius: 0px;
+    }
+  </style>
+</head>
+<body >
+  <div id="container_map"></div>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.8/datamaps.all.js"></script>
+
+    <script>
+        
+
+        var cou_li ={ 
+            'AF': 'Afghanistan',
+            'AX': 'Aland Islands',
+            'AL': 'Albania',
+            'DZ': 'Algeria',
+            'AS': 'American Samoa',
+            'AD': 'Andorra',
+            'AO': 'Angola',
+            'AI': 'Anguilla',
+            'AQ': 'Antarctica',
+            'AG': 'Antigua and Barbuda',
+            'AR': 'Argentina',
+            'AM': 'Armenia',
+            'AW': 'Aruba',
+            'AU': 'Australia',
+            'AT': 'Austria',
+            'AZ': 'Azerbaijan',
+            'BS': 'Bahamas',
+            'BH': 'Bahrain',
+            'BD': 'Bangladesh',
+            'BB': 'Barbados',
+            'BY': 'Belarus',
+            'BE': 'Belgium',
+            'BZ': 'Belize',
+            'BJ': 'Benin',
+            'BM': 'Bermuda',
+            'BT': 'Bhutan',
+            'BO': 'Bolivia',
+            'BA': 'Bosnia and Herzegovina',
+            'BW': 'Botswana',
+            'BV': 'Bouvet Island',
+            'BR': 'Brazil',
+            'VG': 'British Virgin Islands',
+            'IO': 'British Indian Ocean Territory',
+            'BN': 'Brunei Darussalam',
+            'BG': 'Bulgaria',
+            'BF': 'Burkina Faso',
+            'BI': 'Burundi',
+            'KH': 'Cambodia',
+            'CM': 'Cameroon',
+            'CA': 'Canada',
+            'CV': 'Cape Verde',
+            'KY': 'Cayman Islands',
+            'CF': 'Central African Republic',
+            'TD': 'Chad',
+            'CL': 'Chile',
+            'CN': 'China',
+            'HK': 'Hong Kong, Special Administrative Region of China',
+            'MO': 'Macao, Special Administrative Region of China',
+            'CX': 'Christmas Island',
+            'CC': 'Cocos (Keeling) Islands',
+            'CO': 'Colombia',
+            'KM': 'Comoros',
+            'CG': 'Republic of the Congo',
+            'CD': 'Democratic Republic of the Congo',
+            'CK': 'Cook Islands',
+            'CR': 'Costa Rica',
+            'CI': 'Ivory Coast',
+            'HR': 'Croatia',
+            'CU': 'Cuba',
+            'CY': 'Cyprus',
+            'CZ': 'Czech Republic',
+            'DK': 'Denmark',
+            'DJ': 'Djibouti',
+            'DM': 'Dominica',
+            'DO': 'Dominican Republic',
+            'EC': 'Ecuador',
+            'EG': 'Egypt',
+            'SV': 'El Salvador',
+            'GQ': 'Equatorial Guinea',
+            'ER': 'Eritrea',
+            'EE': 'Estonia',
+            'ET': 'Ethiopia',
+            'FK': 'Falkland Islands (Malvinas)',
+            'FO': 'Faroe Islands',
+            'FJ': 'Fiji',
+            'FI': 'Finland',
+            'FR': 'France',
+            'GF': 'French Guiana',
+            'PF': 'French Polynesia',
+            'TF': 'French Southern Territories',
+            'GA': 'Gabon',
+            'GM': 'Gambia',
+            'GE': 'Georgia',
+            'DE': 'Germany',
+            'GH': 'Ghana',
+            'GI': 'Gibraltar',
+            'GR': 'Greece',
+            'GL': 'Greenland',
+            'GD': 'Grenada',
+            'GP': 'Guadeloupe',
+            'GU': 'Guam',
+            'GT': 'Guatemala',
+            'GG': 'Guernsey',
+            'GN': 'Guinea',
+            'GW': 'Guinea-Bissau',
+            'GY': 'Guyana',
+            'HT': 'Haiti',
+            'HM': 'Heard Island and Mcdonald Islands',
+            'VA': 'Holy See (Vatican City State)',
+            'HN': 'Honduras',
+            'HU': 'Hungary',
+            'IS': 'Iceland',
+            'IN': 'India',
+            'ID': 'Indonesia',
+            'IR': 'Iran, Islamic Republic of',
+            'IQ': 'Iraq',
+            'IE': 'Ireland',
+            'IM': 'Isle of Man',
+            'IL': 'Israel',
+            'IT': 'Italy',
+            'JM': 'Jamaica',
+            'JP': 'Japan',
+            'JE': 'Jersey',
+            'JO': 'Jordan',
+            'KZ': 'Kazakhstan',
+            'KE': 'Kenya',
+            'KI': 'Kiribati',
+            'KP': 'Korea, Democratic People\'s Republic of',
+            'KR': 'Korea, Republic of',
+            'KW': 'Kuwait',
+            'KG': 'Kyrgyzstan',
+            'LA': 'Lao PDR',
+            'LV': 'Latvia',
+            'LB': 'Lebanon',
+            'LS': 'Lesotho',
+            'LR': 'Liberia',
+            'LY': 'Libya',
+            'LI': 'Liechtenstein',
+            'LT': 'Lithuania',
+            'LU': 'Luxembourg',
+            'MK': 'Macedonia, Republic of',
+            'MG': 'Madagascar',
+            'MW': 'Malawi',
+            'MY': 'Malaysia',
+            'MV': 'Maldives',
+            'ML': 'Mali',
+            'MT': 'Malta',
+            'MH': 'Marshall Islands',
+            'MQ': 'Martinique',
+            'MR': 'Mauritania',
+            'MU': 'Mauritius',
+            'YT': 'Mayotte',
+            'MX': 'Mexico',
+            'FM': 'Micronesia, Federated States of',
+            'MD': 'Moldova',
+            'MC': 'Monaco',
+            'MN': 'Mongolia',
+            'ME': 'Montenegro',
+            'MS': 'Montserrat',
+            'MA': 'Morocco',
+            'MZ': 'Mozambique',
+            'MM': 'Myanmar',
+            'NA': 'Namibia',
+            'NR': 'Nauru',
+            'NP': 'Nepal',
+            'NL': 'Netherlands',
+            'AN': 'Netherlands Antilles',
+            'NC': 'New Caledonia',
+            'NZ': 'New Zealand',
+            'NI': 'Nicaragua',
+            'NE': 'Niger',
+            'NG': 'Nigeria',
+            'NU': 'Niue',
+            'NF': 'Norfolk Island',
+            'MP': 'Northern Mariana Islands',
+            'NO': 'Norway',
+            'OM': 'Oman',
+            'PK': 'Pakistan',
+            'PW': 'Palau',
+            'PS': 'Palestinian Territory, Occupied',
+            'PA': 'Panama',
+            'PG': 'Papua New Guinea',
+            'PY': 'Paraguay',
+            'PE': 'Peru',
+            'PH': 'Philippines',
+            'PN': 'Pitcairn',
+            'PL': 'Poland',
+            'PT': 'Portugal',
+            'PR': 'Puerto Rico',
+            'QA': 'Qatar',
+            'RE': 'Reunion',
+            'RO': 'Romania',
+            'RU': 'Russian Federation',
+            'RW': 'Rwanda',
+            'BL': 'Saint-Barthelemy',
+            'SH': 'Saint Helena',
+            'KN': 'Saint Kitts and Nevis',
+            'LC': 'Saint Lucia',
+            'MF': 'Saint-Martin (French part)',
+            'PM': 'Saint Pierre and Miquelon',
+            'VC': 'Saint Vincent and Grenadines',
+            'WS': 'Samoa',
+            'SM': 'San Marino',
+            'ST': 'Sao Tome and Principe',
+            'SA': 'Saudi Arabia',
+            'SN': 'Senegal',
+            'RS': 'Serbia',
+            'SC': 'Seychelles',
+            'SL': 'Sierra Leone',
+            'SG': 'Singapore',
+            'SK': 'Slovakia',
+            'SI': 'Slovenia',
+            'SB': 'Solomon Islands',
+            'SO': 'Somalia',
+            'ZA': 'South Africa',
+            'GS': 'South Georgia and the South Sandwich Islands',
+            'SS': 'South Sudan',
+            'ES': 'Spain',
+            'LK': 'Sri Lanka',
+            'SD': 'Sudan',
+            'SR': 'Suriname',
+            'SJ': 'Svalbard and Jan Mayen Islands',
+            'SZ': 'Swaziland',
+            'SE': 'Sweden',
+            'CH': 'Switzerland',
+            'SY': 'Syrian Arab Republic (Syria)',
+            'TW': 'Taiwan, Republic of China',
+            'TJ': 'Tajikistan',
+            'TZ': 'Tanzania, United Republic of',
+            'TH': 'Thailand',
+            'TL': 'Timor-Leste',
+            'TG': 'Togo',
+            'TK': 'Tokelau',
+            'TO': 'Tonga',
+            'TT': 'Trinidad and Tobago',
+            'TN': 'Tunisia',
+            'TR': 'Turkey',
+            'TM': 'Turkmenistan',
+            'TC': 'Turks and Caicos Islands',
+            'TV': 'Tuvalu',
+            'UG': 'Uganda',
+            'UA': 'Ukraine',
+            'AE': 'United Arab Emirates',
+            'GB': 'United Kingdom',
+            'US': 'United States of America',
+            'UM': 'United States Minor Outlying Islands',
+            'UY': 'Uruguay',
+            'UZ': 'Uzbekistan',
+            'VU': 'Vanuatu',
+            'VE': 'Venezuela (Bolivarian Republic of)',
+            'VN': 'Viet Nam',
+            'VI': 'Virgin Islands, US',
+            'WF': 'Wallis and Futuna Islands',
+            'EH': 'Western Sahara',
+            'YE': 'Yemen',
+            'ZM': 'Zambia',
+            'ZW': 'Zimbabwe'
+        
+        }
+
+        
+        
+        // example data from server
+        var series = [
+            ["BLR",75],["BLZ",43],["RUS",50],["RWA",88],["SRB",21],["TLS",43],
+            ["REU",21],["TKM",19],["TJK",60],["ROU",4],["TKL",44],["GNB",38],
+            ["GUM",67],["GTM",2],["SGS",95],["GRC",60],["GNQ",57],["GLP",53],
+            ["JPN",59],["GUY",24],["GGY",4],["GUF",21],["GEO",42],["GRD",65],
+            ["GBR",14],["GAB",47],["SLV",15],["GIN",19],["GMB",63],["GRL",56],
+            ["ERI",57],["MNE",93],["MDA",39],["MDG",71],["MAF",16],["MAR",8],
+            ["MCO",25],["UZB",81],["MMR",21],["MLI",95],["MAC",33],["MNG",93],
+            ["MHL",15],["MKD",52],["MUS",19],["MLT",69],["MWI",37],["MDV",44],
+            ["MTQ",13],["MNP",21],["MSR",89],["MRT",20],["IMN",72],["UGA",59],
+            ["TZA",62],["MYS",75],["MEX",80],["ISR",77],["FRA",54],["IOT",56],
+            ["SHN",91],["FIN",51],["FJI",22],["FLK",4],["FSM",69],["FRO",70],
+            ["NIC",66],["NLD",53],["NOR",7],["NAM",63],["VUT",15],["NCL",66],
+            ["NER",34],["NFK",33],["NGA",45],["NZL",96],["NPL",21],["NRU",13],
+            ["NIU",6],["COK",19],["XKX",32],["CIV",27],["CHE",65],["COL",64],
+            ["CHN",16],["CMR",70],["CHL",15],["CCK",85],["CAN",76],["COG",20],
+            ["CAF",93],["COD",36],["CZE",77],["CYP",65],["CXR",14],["CRI",31],
+            ["CUW",67],["CPV",63],["CUB",40],["SWZ",58],["SYR",96],["SXM",31]];
+
+
+        // Datamaps expect data in format:
+        // { "USA": { "fillColor": "#42a844", numberOfWhatever: 75},
+        //   "FRA": { "fillColor": "#8dc386", numberOfWhatever: 43 } }
+        var dataset = {};
+
+        // We need to colorize every country based on "numberOfWhatever"
+        // colors should be uniq for every value.
+        // For this purpose we create palette(using min/max series-value)
+        var onlyValues = series.map(function(obj){ return obj[1]; });
+        var minValue = Math.min.apply(null, onlyValues),
+                maxValue = Math.max.apply(null, onlyValues);
+
+        // create color palette function
+        // color can be whatever you wish
+        var paletteScale = d3.scale.linear()
+                .domain([minValue,maxValue])
+                .range(["#dddddd","#174ea6"]); // blue color
+
+        // fill dataset in appropriate format
+        series.forEach(function(item){ //
+            // item example value ["USA", 70]
+            var iso = item[0],
+                    value = item[1];
+            dataset[iso] = { numberOfThings: value, fillColor: paletteScale(value) };
+        });
+
+        // render map
+        new Datamap({
+            element: document.getElementById('container_map'),
+            projection: 'mercator', // big world map
+            // countries don't listed in dataset will be painted with this color
+            fills: { defaultFill: '#dddddd' },
+            data: dataset,
+            geographyConfig: {
+                borderColor: '#ffffff',
+                highlightBorderWidth: 2,
+                // don't change color on mouse hover
+                highlightFillColor: function(geo) {
+                    return '#174ea6'; //geo['fillColor'] || 
+                },
+                // only change border
+                highlightBorderColor: 'transparent',
+                // show desired information in tooltip
+                popupTemplate: function(geo, data) {
+                    // don't show tooltip if country don't present in dataset
+                    if (!data) { return ; }
+                    // tooltip content
+                        function findBestMatchAndReturnKey(countryName) {
+                            // Convert the given country name to lowercase for case-insensitive comparison
+                            const lowerCaseCountryName = countryName.toLowerCase();
+                        
+                            let bestMatchKey = null;
+                            let bestMatchScore = 0;
+                        
+                            // Iterate through the dictionary to find the best match
+                            for (const key in cou_li) {
+                            const lowerCaseDictCountryName = cou_li[key].toLowerCase();
+                            const matchScore = getMatchScore(lowerCaseCountryName, lowerCaseDictCountryName);
+                            
+                            if (matchScore > bestMatchScore) {
+                                bestMatchScore = matchScore;
+                                bestMatchKey = key;
+                            }
+                            }
+                        
+                            return bestMatchKey;
+                        }
+
+                        // Function to calculate the similarity score between two strings
+                        function getMatchScore(str1, str2) {
+                            const maxLength = Math.max(str1.length, str2.length);
+                            let matchingCharacters = 0;
+                        
+                            // Calculate the number of matching characters in both strings
+                            for (let i = 0; i < maxLength; i++) {
+                            if (str1[i] === str2[i]) {
+                                matchingCharacters++;
+                            } else {
+                                break;
+                            }
+                            }
+                        
+                            // Return the similarity score as a percentage
+                            return (matchingCharacters / maxLength) * 100;
+                        }
+                        var dat= geo.properties.name;
+                        // Example usage:
+                        const countryName = dat; // Replace this with the actual country name
+                        const bestMatchKey = findBestMatchAndReturnKey(countryName);
+                        console.log(bestMatchKey.toLowerCase());
+                        var t = bestMatchKey.toLowerCase()
+
+                        var re = ['<div class="hoverinfo" style="padding:24px 15px 10px 15px;">',
+                            "<img id='flag' src=\'https://cdn.jsdelivr.net/gh/hjnilsson/country-flags@latest/svg/",t,".svg\' type='img/gif'><i> ",'<strong>', geo.properties.name, '</i></strong>',
+                            '      Count: <strong>', data.numberOfThings, '</strong>',
+                            '</div>'].join('')
+                        console.log(dat)
+                    return re;
+                }
+            }
+        });
+    </script>
+  
+</body>
+</html>

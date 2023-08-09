@@ -1,0 +1,44 @@
+<script type="text/javascript" src="loader.js"></script>
+
+       <div id="regions_div" style="width: 400px; height: 200px; "></div>
+   <script>
+    google.charts.load('current', {
+        'packages':['geochart'],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable([
+          ['Country', 'Visits'],
+          ['Germany', 200],
+          ['United States', 300],
+          ['Brazil', 400],
+          ['Canada', 500],
+          ['France', 600],
+          ['dasdasd', 700],
+          ['India',1000],
+          ['Australia',100],
+          ["china",0],
+          ["IN",12]
+        ]);
+
+        var options = {backgroundColor: "transparent",datalessRegionColor: "#dddddd"
+        ,minValue: 0,  colors: ['#dddddd', '#174ea6']};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+   </script>
+    
+
+   <style>
+   path:hover {
+      fill: black;
+      stroke: none;
+  }
+  g text .text-anchor,
+  g rect{
+      display: none;
+  }
+   </style> 
