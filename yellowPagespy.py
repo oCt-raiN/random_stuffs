@@ -3,9 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 data=[]
 obj={}
-for i in range(0,2):
+for i in range(0,100):
     try:
-        target_website = "https://www.yellowpages.com/search?search_terms=Bakeries&geo_location_terms=Ireland%2C+IN&page="+str(i)
+        target_website = "https://www.yellowpages.com/search?search_terms=Florists&geo_location_terms=denmark&page="+str(i)
         # target_website = "https://www.yellowpages.com.sg/?select=Restaurants&lp_s_loc=&lp_s_tag=&lp_s_cat=1098&s=home&post_type=listing"  
 
         resp = requests.get(target_website)
@@ -38,4 +38,4 @@ for i in range(0,2):
         continue
 df=pd.json_normalize(data)
 print(df)
-df.to_csv("Ireland_bakeries.csv")
+df.to_csv("Denmark_florists.csv")
